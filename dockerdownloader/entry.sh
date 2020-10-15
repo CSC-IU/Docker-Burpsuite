@@ -5,7 +5,8 @@ ggID='10kVVvs5R8IVOr2krS1nW2D4o3Tddvxkn'
 ggURL='https://drive.google.com/uc?export=download'  
 filename="$(curl -sc /tmp/gcokie "${ggURL}&id=${ggID}" | grep -o '="uc-name.*</span>' | sed 's/.*">//;s/<.a> .*//')"  
 getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie)"  
-curl -Lb /tmp/gcokie "${ggURL}&confirm=${getcode}&id=${ggID}" -o "${filename}"
+# curl -Lb /tmp/gcokie "${ggURL}&confirm=${getcode}&id=${ggID}" -o "${filename}"
+curl -Lb /tmp/gcokie "${ggURL}&confirm=${getcode}&id=${ggID}" -o /tmp/burp.tar
 rm -rf /tmp/gcokie
 
 echo "File downloaded. Loading docker image"
