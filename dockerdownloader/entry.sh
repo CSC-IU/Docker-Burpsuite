@@ -9,7 +9,7 @@ curl -Lb /tmp/gcokie "${ggURL}&confirm=${getcode}&id=${ggID}" -o "${filename}"
 rm -rf /tmp/gcokie
 
 echo "File downloaded. Loading docker image"
-docker load /tmp/burp.tar
+docker load -i /tmp/burp.tar
 echo "Image loaded. Starting image..."
-docker run -d -e PUID=1000 -e PGID=1000 -p 3000:3000 secclub/burpsuite-desktop
+docker run --rm -d -e PUID=1000 -e PGID=1000 -p 3000:3000 secclub/burpsuite-desktop
 echo "Complete! Exiting..."
