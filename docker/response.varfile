@@ -1,0 +1,6 @@
+# install4j response file for Burp Suite Community Edition 2020.9.2
+sys.adminRights$Boolean=true
+sys.installationDir=/usr/local/BurpSuiteCommunity
+sys.languageId=en
+sys.programGroupDisabled$Boolean=false
+sys.symlinkDir=/usr/local/bin
