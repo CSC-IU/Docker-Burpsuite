@@ -12,14 +12,12 @@ RUN \
 	DEBIAN_FRONTEND=noninteractive \
 	apt-get install --no-install-recommends -y \
 		firefox \
-		mate-applets \
-		mate-applet-brisk-menu \
 		pavucontrol \
 		terminator \
-		ubuntu-mate-artwork \
-		ubuntu-mate-default-settings \
-		ubuntu-mate-desktop \
-		ubuntu-mate-icon-themes && \
+		xfce4 \
+		xfce4-goodies \
+		xubuntu-default-settings \
+		xubuntu-icon-theme && \
 	echo "**** cleanup ****" && \
 	apt-get clean && \
 	rm -rf \
