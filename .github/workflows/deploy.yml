@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  push:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build And Deploy
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Image
+        id: build_image
+        run: |
+          docker build -t secclub/burpsuite-desktop -f ./docker/Dockerfile ./docker
+      - name: Save tarball
+        run: |
+          docker save --output burpsuite.tar secclub/burpsuite-desktop
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ci-burpsuite-${{ github.run_number }}.tar
+          path: burpsuite.tar
