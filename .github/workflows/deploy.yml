@@ -10,8 +10,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set Image Info
         run: |
-          echo "CIMETA=secclub/burpsuite-desktop" >> $GITHUB_ENV
-          echo "IMAGEBASE=docker.pkg.github.com/csc-iu/labs/burpsuite" >> $GITHUB_ENV
+          export CIMETA="secclub/burpsuite-desktop"
+          export IMAGEBASE="docker.pkg.github.com/csc-iu/labs/burpsuite"
+          echo "CIMETA=${CIMETA}" >> $GITHUB_ENV
+          echo "IMAGEBASE=${IMAGEBASE}" >> $GITHUB_ENV
           echo CI Image set as : ${CIMETA}
           echo Image set as: ${IMAGEBASE}
       - name: Build Image
