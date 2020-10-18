@@ -8,16 +8,67 @@ jobs:
     name: Build And Deploy
     steps:
       - uses: actions/checkout@v2
+      - name: Set Image Info
+        run: |
+          echo "CIMETA=secclub/burpsuite-desktop" >> $GITHUB_ENV
+          echo "IMAGEBASE=docker.pkg.github.com/CSC-IU/Labs/Burpsuite" >> $GITHUB_ENV
+          echo CI Image set as : ${CIMETA}
+          echo Image set as: ${IMAGEBASE}
       - name: Build Image
         id: build_image
         run: |
-          docker build -t secclub/burpsuite-desktop -f ./docker/Dockerfile ./docker
+          docker build -t ${CIMETA} -f ./docker/Dockerfile ./docker
       - name: Save tarball
         run: |
-          docker save --output burpsuite.tar secclub/burpsuite-desktop
+          docker save --output burpsuite.tar ${CIMETA}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ci-burpsuite-${{ github.run_number }}.tar
           path: burpsuite.tar
+      - name: Login
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN  }}" | docker login https://docker.pkg.github.com -u ${{ secrets.USERNAME  }} --password-stdin
+      - name: Deploy Commit ID
+        if: ${{ github.head_ref == '' && github.sha != '' && github.event_name != 'schedule' }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:$GITHUB_SHA
+          docker push ${IMAGEBASE}:$GITHUB_SHA
+      - name: Deploy Run Number
+        if: ${{ github.head_ref == '' && github.sha != '' }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:$GITHUB_RUN_NUMBER
+          docker push ${IMAGEBASE}:$GITHUB_RUN_NUMBER
+      - name: Deploy Latest
+        if: ${{ github.head_ref == '' && github.ref == 'refs/heads/master' }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:latest
+          docker push ${IMAGEBASE}:latest
+      - name: Deploy Develop
+        if: ${{ github.head_ref == '' && startsWith(github.ref, 'refs/heads/dev') }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:latest-develop
+          docker push ${IMAGEBASE}:latest-develop
+      - name: Deploy Branch
+        if: ${{ github.head_ref == '' && startsWith(github.ref, 'refs/heads/') }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:${GITHUB_REF##*/}
+          docker push ${IMAGEBASE}:${GITHUB_REF##*/}
+      - name: Deploy Tag
+        if: ${{ github.head_ref == '' && startsWith(github.ref, 'refs/tags/') }}
+        env:
+          image_id: ${{ steps.build_image.outputs.image_id }}
+        run: |
+          docker tag ${CIMETA} ${IMAGEBASE}:${GITHUB_REF##*/}
+          docker push ${IMAGEBASE}:${GITHUB_REF##*/}
