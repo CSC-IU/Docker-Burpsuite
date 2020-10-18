@@ -11,7 +11,7 @@ jobs:
       - name: Set Image Info
         run: |
           echo "CIMETA=secclub/burpsuite-desktop" >> $GITHUB_ENV
-          echo "IMAGEBASE=docker.pkg.github.com/CSC-IU/Labs/Burpsuite" >> $GITHUB_ENV
+          echo "IMAGEBASE=docker.pkg.github.com/csc-iu/labs/burpsuite" >> $GITHUB_ENV
           echo CI Image set as : ${CIMETA}
           echo Image set as: ${IMAGEBASE}
       - name: Build Image
