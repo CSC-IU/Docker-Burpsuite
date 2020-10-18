@@ -31,7 +31,7 @@ jobs:
           path: burpsuite.tar
       - name: Login
         run: |
-          echo "${{ secrets.GITHUB_TOKEN  }}" | docker login ghcr.io -u ${{ secrets.USERNAME  }} --password-stdin
+          echo "${{ secrets.CR_PAT  }}" | docker login ghcr.io -u ${{ secrets.USERNAME  }} --password-stdin
       - name: Deploy Commit ID
         if: ${{ github.head_ref == '' && github.sha != '' && github.event_name != 'schedule' }}
         env:
