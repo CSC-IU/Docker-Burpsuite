@@ -11,7 +11,7 @@ jobs:
       - name: Set Image Info
         run: |
           export CIMETA="secclub/burpsuite-desktop"
-          export IMAGEBASE="docker.pkg.github.com/csc-iu/labs/burpsuite"
+          export IMAGEBASE="ghcr.io/csc-iu/labs/burpsuite"
           echo "CIMETA=${CIMETA}" >> $GITHUB_ENV
           echo "IMAGEBASE=${IMAGEBASE}" >> $GITHUB_ENV
           echo CI Image set as : ${CIMETA}
@@ -31,7 +31,7 @@ jobs:
           path: burpsuite.tar
       - name: Login
         run: |
-          echo "${{ secrets.GITHUB_TOKEN  }}" | docker login https://docker.pkg.github.com -u ${{ secrets.USERNAME  }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN  }}" | docker login ghcr.io -u ${{ secrets.USERNAME  }} --password-stdin
       - name: Deploy Commit ID
         if: ${{ github.head_ref == '' && github.sha != '' && github.event_name != 'schedule' }}
         env:
