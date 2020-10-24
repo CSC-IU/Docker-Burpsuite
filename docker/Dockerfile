@@ -12,6 +12,7 @@ RUN \
 	DEBIAN_FRONTEND=noninteractive \
 	apt-get install --no-install-recommends -y \
 		firefox \
+		libnss3 \
 		pavucontrol \
 		terminator \
 		xfce4 \
