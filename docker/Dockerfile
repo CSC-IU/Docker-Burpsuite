@@ -37,7 +37,6 @@ RUN \
 # add local files
 COPY /root /
 COPY /desktop /config/Desktop
-RUN chmod +x /config/Desktop/burpsuite.sh
 
 # ports and volumes
 EXPOSE 3000
