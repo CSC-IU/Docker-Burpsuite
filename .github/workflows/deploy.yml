@@ -20,15 +20,6 @@ jobs:
         id: build_image
         run: |
           docker build -t ${CIMETA} -f ./docker/Dockerfile ./docker
-      - name: Save tarball
-        run: |
-          docker save --output burpsuite.tar ${CIMETA}
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ci-burpsuite-${{ github.run_number }}.tar
-          path: burpsuite.tar
       - name: Login
         run: |
           echo "${{ secrets.CR_PAT  }}" | docker login ghcr.io -u ${{ secrets.USERNAME  }} --password-stdin
@@ -74,3 +65,13 @@ jobs:
         run: |
           docker tag ${CIMETA} ${IMAGEBASE}:${GITHUB_REF##*/}
           docker push ${IMAGEBASE}:${GITHUB_REF##*/}
+
+      - name: Save tarball
+        run: |
+          docker save --output burpsuite.tar ${CIMETA}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ci-burpsuite-${{ github.run_number }}.tar
+          path: burpsuite.tar
