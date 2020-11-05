@@ -13,6 +13,12 @@ docker run --rm -d --network csc-network --name juice-shop bkimminich/juice-shop
 [Click me once you have run the command!](http://127.0.0.1:3000)
 
 
+Get the juice-shop ip:
+
+```bash
+docker container inspect juice-shop
+```
+
 When you are done:
 
 ```bash
